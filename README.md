@@ -1,38 +1,37 @@
-# Установка
-1. **Создание виртуального окружения, установка зависимостей, создание БД:**  
-    `python -m venv .venv`  
-    `pip install -r requirements.txt`  
-    `docker-compose -f docker-compose-local.yaml up -d`  
+# Installation  
+1. **Create a virtual environment, install dependencies, create a database:**  
+     `python -m venv .venv`  
+     `pip install -r requirements.txt`  
+     `docker-compose -f docker-compose-local.yaml up -d`  
 
-2. **Создание и применение миграций:**  
-**Создаем базу alembic:**  
+2. **Creating and applying migrations:**  
+**Create an alembic base:**  
 `alembic init migrations`  
-**Меняем путь к БД в файле алембика (alembic.ini): **  
+**Change the path to the database in the alembic file (alembic.ini): **  
 `sqlalchemy.url = postgresql://postgres:postgres@0.0.0.0:5432/postgres`  
-**Импортируем модели в env .py**  
+**Import models into env .py**  
 `from main import Base`  
 `target_metadata = Base.metadata`  
-**Создаем первую миграцию**  
+**Create the first migration**  
 `alembic revision --autogenerate -m "comment"`  
-**Применяем миграции:**  
+**Apply migrations:**  
 `alembic upgrade heads`  
 
-3. **Запуск проекта:**  
-`uvicorn main:app --port 8000  --reload`
+3. **Project start:**  
+`uvicorn main:app --port 8000 --reload`  
 
-# Структура проекта:  
-**main.py**-- *API роутеры, и запуск API*  
-**requirements.txt**-- *зависимости проекта*  
-**session.py**-- *создание сессии БД и движка БД*  
-**settings.py** -- *настройки БД и хэширования*  
-**security.py**-- *работа с токенами*  
-**.gitignore** -- *ингорируемые файлы и папки при коммитах*  
-**docker-compose-local.yaml** -- *докер для БД*  
-**user/api_login.py** -- *эндпоинт создания токена*  
-**user/api**-- *эндпоинты пользователя*  
-**user/dals.py** -- *методы работы с пользователем через БД*  
-**user/hashing.py**-- *методы валидации и хэширования паролей*  
-**user/models.py** -- *ORM модели *  
-**user/schemas.py** -- *pydantic модели для валидации данных*  
-**user/services.py** -- *сервисный слой (обертки для методов работы с БД,  
-для каждого метода открывается новая сессия с БД)*  
+# Project structure:  
+**main.py**-- *API routers, and API startup*  
+**requirements.txt**-- *project dependencies*  
+**session.py** -- *create database session and database engine*  
+**settings.py** -- *database and hash settings*  
+**security.py**-- *work with tokens*  
+**.gitignore** -- *ignore files and folders on commits*  
+**docker-compose-local.yaml** -- *docker for db*  
+**user/api_login.py** -- *token creation endpoint*  
+**user/api** -- *user endpoints*  
+**user/dals.py** -- *methods of working with the user through the database*  
+**user/hashing.py**-- *password validation and hashing methods*  
+**user/models.py** -- *ORM models*  
+**user/schemas.py** -- *pydantic models for data validation*  
+**user/services.py** -- *service layer (wrappers for database methods,for each method a new session with the database is opened)*
